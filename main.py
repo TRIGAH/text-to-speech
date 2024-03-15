@@ -3,10 +3,16 @@ import os
 
 def text_to_speech(text, language='en'):
     tts = gTTS(text=text, lang=language, slow=False)
-    tts.save("output.mp3")
-    os.system("mpg123 output.mp3")  # This command plays the generated audio using mpg123
-    # os.remove("output.mp3")  # Remove the temporary audio file after playing
+    tts.save("output.mp3")  # Save the speech as an MP3 file
+
+    # Play the speech using the default media player
+    if os.name == 'nt':  # For Windows
+        os.system("start output.mp3")
+    elif os.name == 'posix':  # For Linux/Mac OS
+        os.system("xdg-open output.mp3")
+    else:
+        print("Unsupported operating system")
 
 if __name__ == "__main__":
-    text = input("Enter the text to convert to speech: ")
+    text = input("Enter the text you want to convert to speech: ")
     text_to_speech(text)
